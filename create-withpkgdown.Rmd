@@ -85,6 +85,26 @@ say_hi <- function(name, exclamation = TRUE) {
 }
 ```
 
+## Add a README
+
+We include a `README.Rmd` and then generate the `README.md` based on it:
+
+```{r}
+usethis::use_readme_rmd(open = FALSE)
+fs::file_copy(
+  path = file.path("..", "withpkgdown-source-files", "README.Rmd"), 
+  new_path = "README.Rmd", 
+  overwrite = TRUE
+)
+xfun::Rscript_call(
+  rmarkdown::render,
+  args = list(
+    input = "README.Rmd",
+    output_options = list(html_preview = "false")
+    )
+  )
+```
+
 ## Documenting the package and building
 
 We finish by running commands that will document, build, and install the package.  It may also be a good idea to check the package from within this file.

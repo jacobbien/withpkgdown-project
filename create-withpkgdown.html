@@ -419,7 +419,7 @@ desired:</p>
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;), &quot;Hello Jacob!&quot;)
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;, exclamation = FALSE), &quot;Hello Jacob.&quot;)
 })</code></pre>
-<pre><code>## Test passed 🥇</code></pre>
+<pre><code>## Test passed 😀</code></pre>
 <p>Code chunks that have one or more lines starting with
 <code>test_that(</code> (or <code>testthat::test_that(</code>) are added
 to the package as tests.</p>
@@ -433,6 +433,29 @@ to the package as tests.</p>
   paste0(&quot;Hi &quot;, name, ifelse(exclamation, &quot;!&quot;, &quot;.&quot;))
 }</code></pre>
 </div>
+</div>
+<div id="add-a-readme" class="section level2">
+<h2>Add a README</h2>
+<p>We include a <code>README.Rmd</code> and then generate the
+<code>README.md</code> based on it:</p>
+<pre class="r"><code>usethis::use_readme_rmd(open = FALSE)</code></pre>
+<pre><code>## ✔ Writing &#39;README.Rmd&#39;
+## ✔ Adding &#39;^README\\.Rmd$&#39; to &#39;.Rbuildignore&#39;
+## ✔ Creating &#39;.git/hooks/&#39;
+## ✔ Writing &#39;.git/hooks/pre-commit&#39;</code></pre>
+<pre class="r"><code>fs::file_copy(
+  path = file.path(&quot;..&quot;, &quot;withpkgdown-source-files&quot;, &quot;README.Rmd&quot;), 
+  new_path = &quot;README.Rmd&quot;, 
+  overwrite = TRUE
+)
+xfun::Rscript_call(
+  rmarkdown::render,
+  args = list(
+    input = &quot;README.Rmd&quot;,
+    output_options = list(html_preview = &quot;false&quot;)
+    )
+  )</code></pre>
+<pre><code>## [1] &quot;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/README.md&quot;</code></pre>
 </div>
 <div id="documenting-the-package-and-building" class="section level2">
 <h2>Documenting the package and building</h2>
