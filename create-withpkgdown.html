@@ -419,7 +419,7 @@ desired:</p>
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;), &quot;Hello Jacob!&quot;)
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;, exclamation = FALSE), &quot;Hello Jacob.&quot;)
 })</code></pre>
-<pre><code>## Test passed 🥳</code></pre>
+<pre><code>## Test passed 🌈</code></pre>
 <p>Code chunks that have one or more lines starting with
 <code>test_that(</code> (or <code>testthat::test_that(</code>) are added
 to the package as tests.</p>
@@ -459,16 +459,22 @@ xfun::Rscript_call(
 </div>
 <div id="add-a-vignette" class="section level2">
 <h2>Add a vignette</h2>
-<pre class="r"><code>fs::dir_create(&quot;vignettes&quot;)
-fs::file_copy(&quot;../withpkgdown-source-files/using-this-package.Rmd&quot;, &quot;vignettes&quot;)</code></pre>
-<p>We’ll also add some lines to the DESCRIPTION file:</p>
-<pre class="r"><code>litr:::add_text_to_file(txt = c(&quot;    knitr,&quot;, &quot;    rmarkdown,&quot;),
+<p>We’ll define a function here that will soon be added to
+<code>litr</code>:</p>
+<pre class="r"><code><span id='add_vignettes'>add_vignettes</span> &lt;- function(rmd_files) {
+  fs::dir_create(&quot;vignettes&quot;)
+  for (fn in rmd_files) fs::file_copy(fn, &quot;vignettes&quot;)
+  
+  # update DESCRIPTION file:
+  litr:::add_text_to_file(txt = c(&quot;    knitr,&quot;, &quot;    rmarkdown,&quot;),
                         filename = &quot;DESCRIPTION&quot;,
                         location = stringr::str_which(
                           readLines(&quot;DESCRIPTION&quot;), &quot;Suggests:&quot;) + 1
                         )
-litr:::add_text_to_file(txt = c(&quot;VignetteBuilder: knitr&quot;),
-                        filename = &quot;DESCRIPTION&quot;)</code></pre>
+  litr:::add_text_to_file(txt = c(&quot;VignetteBuilder: knitr&quot;),
+                          filename = &quot;DESCRIPTION&quot;)
+}</code></pre>
+<pre class="r"><code><a href='#add_vignettes'>add_vignettes</a>(&quot;../withpkgdown-source-files/using-this-package.Rmd&quot;)</code></pre>
 </div>
 <div id="documenting-the-package-and-building" class="section level2">
 <h2>Documenting the package and building</h2>

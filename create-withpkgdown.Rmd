@@ -126,7 +126,7 @@ add_vignettes <- function(rmd_files) {
 ```
 
 ```{r}
-add_vignette("../withpkgdown-source-files/using-this-package.Rmd")
+add_vignettes("../withpkgdown-source-files/using-this-package.Rmd")
 ```
 
 
