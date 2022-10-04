@@ -150,7 +150,6 @@ We start with the equivalent of `usethis::use_pkgdown()`, but with a few differe
 config_file <- "_pkgdown.yml"
 destdir <- "docs"
 usethis::use_build_ignore(c(config_file, destdir, "pkgdown"))
-usethis::use_git_ignore(destdir)
 config_path <- file.path("../withpkgdown-source-files", "_pkgdown.yml")
 if (!fs::file_exists(config_path)) {
   # create a new config file (note it lives outside of package)
