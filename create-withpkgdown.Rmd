@@ -105,6 +105,31 @@ xfun::Rscript_call(
   )
 ```
 
+## Add a vignette
+
+We'll define a function here that will soon be added to `litr`:
+
+```{r}
+add_vignettes <- function(rmd_files) {
+  fs::dir_create("vignettes")
+  for (fn in rmd_files) fs::file_copy(fn, "vignettes")
+  
+  # update DESCRIPTION file:
+  litr:::add_text_to_file(txt = c("    knitr,", "    rmarkdown,"),
+                        filename = "DESCRIPTION",
+                        location = stringr::str_which(
+                          readLines("DESCRIPTION"), "Suggests:") + 1
+                        )
+  litr:::add_text_to_file(txt = c("VignetteBuilder: knitr"),
+                          filename = "DESCRIPTION")
+}
+```
+
+```{r}
+add_vignette("../withpkgdown-source-files/using-this-package.Rmd")
+```
+
+
 ## Documenting the package and building
 
 We finish by running commands that will document, build, and install the package.  It may also be a good idea to check the package from within this file.

@@ -419,7 +419,7 @@ desired:</p>
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;), &quot;Hello Jacob!&quot;)
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;, exclamation = FALSE), &quot;Hello Jacob.&quot;)
 })</code></pre>
-<pre><code>## Test passed 😀</code></pre>
+<pre><code>## Test passed 🥳</code></pre>
 <p>Code chunks that have one or more lines starting with
 <code>test_that(</code> (or <code>testthat::test_that(</code>) are added
 to the package as tests.</p>
@@ -456,6 +456,19 @@ xfun::Rscript_call(
     )
   )</code></pre>
 <pre><code>## [1] &quot;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/README.md&quot;</code></pre>
+</div>
+<div id="add-a-vignette" class="section level2">
+<h2>Add a vignette</h2>
+<pre class="r"><code>fs::dir_create(&quot;vignettes&quot;)
+fs::file_copy(&quot;../withpkgdown-source-files/using-this-package.Rmd&quot;, &quot;vignettes&quot;)</code></pre>
+<p>We’ll also add some lines to the DESCRIPTION file:</p>
+<pre class="r"><code>litr:::add_text_to_file(txt = c(&quot;    knitr,&quot;, &quot;    rmarkdown,&quot;),
+                        filename = &quot;DESCRIPTION&quot;,
+                        location = stringr::str_which(
+                          readLines(&quot;DESCRIPTION&quot;), &quot;Suggests:&quot;) + 1
+                        )
+litr:::add_text_to_file(txt = c(&quot;VignetteBuilder: knitr&quot;),
+                        filename = &quot;DESCRIPTION&quot;)</code></pre>
 </div>
 <div id="documenting-the-package-and-building" class="section level2">
 <h2>Documenting the package and building</h2>

@@ -10,7 +10,10 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr
 LitrVersionUsed: 0.0.3
-LitrId: 3b79df54362bde15bfa353168d197969
+LitrId: ef96f56674374b36416c9b56d6afbecc
