@@ -419,7 +419,7 @@ desired:</p>
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;), &quot;Hello Jacob!&quot;)
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;, exclamation = FALSE), &quot;Hello Jacob.&quot;)
 })</code></pre>
-<pre><code>## Test passed 😀</code></pre>
+<pre><code>## Test passed 🎉</code></pre>
 <p>Code chunks that have one or more lines starting with
 <code>test_that(</code> (or <code>testthat::test_that(</code>) are added
 to the package as tests.</p>
@@ -536,6 +536,17 @@ has been called.</p>
 ## Writing &#39;sitemap.xml&#39;
 ## -- Building search index -------------------------------------------------------
 ## == DONE ========================================================================</code></pre>
+<p>After this step, you can locally see the site by opening
+<code>docs/index.html</code> in the browser.</p>
+<p>To deploy this using github pages, we go to our repo on github
+(through the browser) and click on Settings &gt; Pages, which brings us
+<a href="https://github.com/jacobbien/withpkgdown-project/settings/pages">here</a>.
+Under “Branch”, we choose the appropriate branch followed by the
+<code>/docs</code> folder.</p>
+<p>do the following additional step.</p>
+<pre class="r"><code>pkgdown:::build_github_pages()</code></pre>
+<pre><code>## -- Extra files for GitHub pages ------------------------------------------------
+## Writing ]8;;ide:run:pkgdown::preview_page(&#39;.nojekyll&#39;)&#39;.nojekyll&#39;]8;;</code></pre>
 </div>
 
 

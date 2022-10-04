@@ -165,5 +165,13 @@ Be sure that this next command is after `litr::document()` has been called.
 pkgdown::build_site()
 ```
 
+After this step, you can locally see the site by opening `docs/index.html` in the browser.
 
+To deploy this using github pages, we go to our repo on github (through the browser) and click on Settings > Pages, which brings us [here](https://github.com/jacobbien/withpkgdown-project/settings/pages).  Under "Branch", we choose the appropriate branch followed by the `/docs` folder.
+
+do the following additional step.
+
+```{r}
+pkgdown:::build_github_pages()
+```
 
