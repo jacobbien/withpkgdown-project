@@ -434,6 +434,17 @@ to the package as tests.</p>
 }</code></pre>
 </div>
 </div>
+<div id="documenting-the-package-and-building" class="section level2">
+<h2>Documenting the package and building</h2>
+<p>Document package.</p>
+<pre class="r"><code>rm(list = ls())
+litr::document()</code></pre>
+<pre><code>## ℹ Updating withpkgdown documentation</code></pre>
+<pre><code>## ℹ Loading withpkgdown
+## Writing &#39;]8;;file:///Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/NAMESPACENAMESPACE]8;;&#39;
+## Writing &#39;]8;;ide:run:pkgload::dev_help(&#39;say_hello&#39;)say_hello.Rd]8;;&#39;
+## Writing &#39;]8;;ide:run:pkgload::dev_help(&#39;say_hi&#39;)say_hi.Rd]8;;&#39;</code></pre>
+</div>
 <div id="add-a-readme" class="section level2">
 <h2>Add a README</h2>
 <p>We include a <code>README.Rmd</code> and then generate the
@@ -476,21 +487,55 @@ xfun::Rscript_call(
 }</code></pre>
 <pre class="r"><code><a href='#add_vignettes'>add_vignettes</a>(&quot;../withpkgdown-source-files/using-this-package.Rmd&quot;)</code></pre>
 </div>
-<div id="documenting-the-package-and-building" class="section level2">
-<h2>Documenting the package and building</h2>
-<p>We finish by running commands that will document, build, and install
-the package. It may also be a good idea to check the package from within
-this file.</p>
-<pre class="r"><code>rm(list = ls())
-litr::document() # &lt;-- use instead of devtools::document()</code></pre>
-<pre><code>## ℹ Updating withpkgdown documentation</code></pre>
-<pre><code>## ℹ Loading withpkgdown
-## Writing &#39;]8;;file:///Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/NAMESPACENAMESPACE]8;;&#39;
-## Writing &#39;]8;;ide:run:pkgload::dev_help(&#39;say_hello&#39;)say_hello.Rd]8;;&#39;
-## Writing &#39;]8;;ide:run:pkgload::dev_help(&#39;say_hi&#39;)say_hi.Rd]8;;&#39;</code></pre>
-<pre class="r"><code># devtools::build()
-# devtools::install()
-# devtools::check(document = FALSE)</code></pre>
+<div id="add-a-pkgdown-site" class="section level2">
+<h2>Add a pkgdown site</h2>
+<p>We start with the equivalent of <code>usethis::use_pkgdown()</code>,
+but with a few differences:</p>
+<ol style="list-style-type: decimal">
+<li>Avoid the parts to do with looking for projects</li>
+<li>Allow one to use a custom <code>_pkgdown.yml</code></li>
+<li>Store <code>_pkgdown.yml</code> outside of package</li>
+</ol>
+<pre class="r"><code>config_file &lt;- &quot;_pkgdown.yml&quot;
+destdir &lt;- &quot;docs&quot;
+usethis::use_build_ignore(c(config_file, destdir, &quot;pkgdown&quot;))</code></pre>
+<pre><code>## ✔ Adding &#39;^_pkgdown\\.yml$&#39;, &#39;^docs$&#39;, &#39;^pkgdown$&#39; to &#39;.Rbuildignore&#39;</code></pre>
+<pre class="r"><code>usethis::use_git_ignore(destdir)</code></pre>
+<pre><code>## ✔ Adding &#39;docs&#39; to &#39;.gitignore&#39;</code></pre>
+<pre class="r"><code>config_path &lt;- file.path(&quot;../withpkgdown-source-files&quot;, &quot;_pkgdown.yml&quot;)
+if (!fs::file_exists(config_path)) {
+  # create a new config file (note it lives outside of package)
+  config &lt;- usethis:::pkgdown_config(destdir)
+  usethis::write_over(config_path, yaml::as.yaml(config))
+}
+fs::file_copy(config_path, &quot;.&quot;)</code></pre>
+<pre class="r"><code>pkgdown::build_site()</code></pre>
+<pre><code>## -- Installing package into temporary library -----------------------------------
+## == Building pkgdown site =======================================================
+## Reading from: &#39;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown&#39;
+## Writing to:   &#39;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/docs&#39;
+## -- Initialising site -----------------------------------------------------------
+## Copying &#39;../../../../../Library/R/x86_64/4.2/library/pkgdown/BS5/assets/link.svg&#39; to &#39;link.svg&#39;
+## Copying &#39;../../../../../Library/R/x86_64/4.2/library/pkgdown/BS5/assets/pkgdown.js&#39; to &#39;pkgdown.js&#39;
+## -- Building home ---------------------------------------------------------------
+## Writing &#39;authors.html&#39;
+## Reading &#39;LICENSE.md&#39;
+## Writing &#39;LICENSE.html&#39;
+## Writing &#39;LICENSE-text.html&#39;
+## Writing &#39;404.html&#39;
+## -- Building function reference -------------------------------------------------
+## Writing &#39;reference/index.html&#39;
+## Reading &#39;man/say_hello.Rd&#39;
+## Writing &#39;reference/say_hello.html&#39;
+## Reading &#39;man/say_hi.Rd&#39;
+## Writing &#39;reference/say_hi.html&#39;
+## -- Building articles -----------------------------------------------------------
+## Writing &#39;articles/index.html&#39;
+## Reading &#39;vignettes/using-this-package.Rmd&#39;
+## Writing &#39;articles/using-this-package.html&#39;
+## Writing &#39;sitemap.xml&#39;
+## -- Building search index -------------------------------------------------------
+## == DONE ========================================================================</code></pre>
 </div>
 
 

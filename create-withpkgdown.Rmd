@@ -85,6 +85,15 @@ say_hi <- function(name, exclamation = TRUE) {
 }
 ```
 
+## Documenting the package and building
+
+Document package.
+
+```{r}
+rm(list = ls())
+litr::document()
+```
+
 ## Add a README
 
 We include a `README.Rmd` and then generate the `README.md` based on it:
@@ -129,16 +138,33 @@ add_vignettes <- function(rmd_files) {
 add_vignettes("../withpkgdown-source-files/using-this-package.Rmd")
 ```
 
+## Add a pkgdown site
 
-## Documenting the package and building
+We start with the equivalent of `usethis::use_pkgdown()`, but with a few differences:
 
-We finish by running commands that will document, build, and install the package.  It may also be a good idea to check the package from within this file.
+1. Avoid the parts to do with looking for projects
+2. Allow one to use a custom `_pkgdown.yml`
+3. Store `_pkgdown.yml` outside of package
 
 ```{r}
-rm(list = ls())
-litr::document() # <-- use instead of devtools::document()
-# devtools::build()
-# devtools::install()
-# devtools::check(document = FALSE)
+config_file <- "_pkgdown.yml"
+destdir <- "docs"
+usethis::use_build_ignore(c(config_file, destdir, "pkgdown"))
+usethis::use_git_ignore(destdir)
+config_path <- file.path("../withpkgdown-source-files", "_pkgdown.yml")
+if (!fs::file_exists(config_path)) {
+  # create a new config file (note it lives outside of package)
+  config <- usethis:::pkgdown_config(destdir)
+  usethis::write_over(config_path, yaml::as.yaml(config))
+}
+fs::file_copy(config_path, ".")
 ```
+
+Be sure that this next command is after `litr::document()` has been called.
+
+```{r}
+pkgdown::build_site()
+```
+
+
 
