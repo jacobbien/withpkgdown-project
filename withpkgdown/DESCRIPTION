@@ -17,4 +17,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown
 LitrVersionUsed: 0.0.3
-LitrId: 7732b6bd216ec5f6b2f903c8e1461fd3
+LitrId: ade3e749c85887c9d295604c13d98bf9
