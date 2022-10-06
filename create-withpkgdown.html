@@ -383,11 +383,8 @@ of the R package.</p>
     Version = &quot;0.0.0.9000&quot;,
     Title = &quot;A Package With a README, Vignette, and Pkgdown Site&quot;,
     Description = &quot;This package&#39;s purpose is to show how to have a README, vignette, and a pkgdown website using litr.&quot;,
-    `Authors@R` = person(
-      given = &quot;First&quot;,
-      family = &quot;Last&quot;,
-      email = &quot;you@gmail.com&quot;,
-      role = c(&quot;aut&quot;, &quot;cre&quot;)
+    `Authors@R` = person(&quot;First&quot;, &quot;Last&quot;, email = &quot;you@gmail.com&quot;,
+                         role = c(&quot;aut&quot;, &quot;cre&quot;)
       )
   )
 )
@@ -400,7 +397,7 @@ The real purpose of this template starts in <a href="#extra">this
 section</a>.</p>
 <div id="define-two-functions" class="section level3">
 <h3>Define two functions</h3>
-<p>Let’s define a function that says hello:</p>
+<p>Let’s define functions that say hello and hi:</p>
 <pre class="r"><code>#&#39; Say hello to someone
 #&#39; 
 #&#39; @param name Name of a person
@@ -408,26 +405,9 @@ section</a>.</p>
 #&#39; @export 
 <span id='say_hello'>say_hello</span> &lt;- function(name, exclamation = TRUE) {
   paste0(&quot;Hello &quot;, name, ifelse(exclamation, &quot;!&quot;, &quot;.&quot;))
-}</code></pre>
-<p>Code chunks whose first line starts with <code>#&#39;</code> are added to
-the package.</p>
-<p>We can try running it.</p>
-<pre class="r"><code><a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;)</code></pre>
-<pre><code>## [1] &quot;Hello Jacob!&quot;</code></pre>
-<p>That code chunk does not start with <code>#&#39;</code>, so it is not
-added to the package.</p>
-<p>Let’s write some tests to make sure the function behaves as
-desired:</p>
-<pre class="r"><code>testthat::test_that(&quot;say_hello works&quot;, {
-  testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;), &quot;Hello Jacob!&quot;)
-  testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;, exclamation = FALSE), &quot;Hello Jacob.&quot;)
-})</code></pre>
-<pre><code>## Test passed 😸</code></pre>
-<p>Code chunks that have one or more lines starting with
-<code>test_that(</code> (or <code>testthat::test_that(</code>) are added
-to the package as tests.</p>
-<p>Let’s also define a function that says hi:</p>
-<pre class="r"><code>#&#39; Say hi to someone
+}
+
+#&#39; Say hi to someone
 #&#39; 
 #&#39; @param name Name of a person
 #&#39; @param exclamation Whether to include an exclamation mark
@@ -452,123 +432,57 @@ litr::document()</code></pre>
 <h2>Add extra items</h2>
 <p>This is the main point of this template. In addition to this .Rmd
 file, we’ll need a folder with a few extra source files (e.g., a hex
-sticker, a README.Rmd, vignettes, etc.). You’ll create that folder and
-the files within it yourself (i.e., they are not created by this .Rmd
-file). In this case, we’ll call this folder
-<code>withpkgdown-source-files</code>.</p>
-</div>
-<div id="add-a-hex-sticker" class="section level2">
-<h2>Add a hex sticker</h2>
+sticker, a README.Rmd, vignettes, etc.). That folder and the files
+within it should be created yourself (i.e., they are not created by this
+.Rmd file). The standard layout when creating a package called
+<code>mypkg</code> is to have a directory called
+<code>mypkg-project</code> that has <code>create-mypkg.Rmd</code> and
+also <code>source-files/</code> in it. Once you litr-knit
+<code>create-mypkg.Rmd</code>, <code>mypkg-project</code> will also have
+<code>create-mypkg.html</code> and the package <code>mypkg</code> in
+it.</p>
+<div id="add-a-hex-sticker" class="section level3">
+<h3>Add a hex sticker</h3>
 <p>This part is optional, but suppose you’ve made a hex sticker for your
 package.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
-You’d put it in the <code>withpkgdown-source-files</code> directory.
-We’ll use the <code>litr</code> hex for this example, even though
-technically we should have created a “withpkgdown” sticker for this
-example.</p>
-<pre class="r"><code>fs::dir_create(&quot;man/figures&quot;)
-fs::file_copy(
-  path = file.path(&quot;..&quot;, &quot;withpkgdown-source-files&quot;, &quot;litr-hex.png&quot;), 
-  new_path = &quot;man/figures/logo.png&quot;, 
-  overwrite = TRUE
-)</code></pre>
+You’d put it in the <code>source-files</code> directory. We’ll use the
+<code>litr</code> hex for this example, even though technically we
+should have created a “withpkgdown” sticker for this example.</p>
+<pre class="r"><code>litr::add_hex_sticker(&quot;../source-files/litr-hex.png&quot;)</code></pre>
 </div>
-<div id="add-a-readme" class="section level2">
-<h2>Add a README</h2>
-<p>Our README.Rmd lives in the <code>withpkgdown-source-files</code>
-directory. As described <a href="https://pkgdown.r-lib.org/reference/build_home.html#package-logo">here</a>,
-we’ll add the following to the level-one header at the top of the
-README:</p>
-<pre><code># withpkgdown: A Package With a README, Vignette, and Pkgdown Site &lt;img src=&quot;man/figures/logo.png&quot; align=&quot;right&quot; /&gt;</code></pre>
+<div id="add-a-readme" class="section level3">
+<h3>Add a README</h3>
+<p>Our README.Rmd lives in the <code>source-files</code> directory. As
+described <a href="https://pkgdown.r-lib.org/reference/build_home.html#package-logo">here</a>,
+if we have a hex sticker, we’ll add something like the following to the
+level-one header at the top of the README:</p>
+<pre><code># withpkgdown: An Example Package &lt;img src=&quot;man/figures/logo.png&quot; align=&quot;right&quot; height=&quot;139&quot; /&gt;</code></pre>
 <p>We add <code>README.Rmd</code> to the package and then generate the
 <code>README.md</code> based on it:</p>
-<pre class="r"><code><span id='add_readme'>add_readme</span> &lt;- function(rmd_file) {
-  usethis::use_readme_rmd(open = FALSE)
-  fs::file_copy(rmd_file, new_path = &quot;README.Rmd&quot;, overwrite = TRUE)
-  xfun::Rscript_call(
-    rmarkdown::render,
-    args = list(
-      input = &quot;README.Rmd&quot;,
-      output_options = list(html_preview = &quot;false&quot;)
-    )
-  )
-}</code></pre>
-<pre class="r"><code><a href='#add_readme'>add_readme</a>(&quot;../withpkgdown-source-files/README.Rmd&quot;)</code></pre>
+<pre class="r"><code>litr::add_readme(&quot;../source-files/README.Rmd&quot;)</code></pre>
 <pre><code>## ✔ Writing &#39;README.Rmd&#39;
 ## ✔ Adding &#39;^README\\.Rmd$&#39; to &#39;.Rbuildignore&#39;
 ## ✔ Creating &#39;.git/hooks/&#39;
 ## ✔ Writing &#39;.git/hooks/pre-commit&#39;</code></pre>
-<pre><code>## [1] &quot;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/README.md&quot;</code></pre>
 </div>
-<div id="add-a-vignette" class="section level2">
-<h2>Add a vignette</h2>
-<p>We’ll define a function here that will soon be added to
-<code>litr</code>:</p>
-<pre class="r"><code><span id='add_vignettes'>add_vignettes</span> &lt;- function(rmd_files) {
-  fs::dir_create(&quot;vignettes&quot;)
-  for (fn in rmd_files) fs::file_copy(fn, &quot;vignettes&quot;)
-  
-  # update DESCRIPTION file:
-  litr:::add_text_to_file(txt = c(&quot;    knitr,&quot;, &quot;    rmarkdown,&quot;),
-                        filename = &quot;DESCRIPTION&quot;,
-                        location = stringr::str_which(
-                          readLines(&quot;DESCRIPTION&quot;), &quot;Suggests:&quot;) + 1
-                        )
-  litr:::add_text_to_file(txt = c(&quot;VignetteBuilder: knitr&quot;),
-                          filename = &quot;DESCRIPTION&quot;)
-}</code></pre>
-<pre class="r"><code><a href='#add_vignettes'>add_vignettes</a>(&quot;../withpkgdown-source-files/using-this-package.Rmd&quot;)</code></pre>
+<div id="add-a-vignette" class="section level3">
+<h3>Add a vignette</h3>
+<pre class="r"><code>litr::add_vignettes(&quot;../source-files/using-this-package.Rmd&quot;)</code></pre>
 </div>
-<div id="add-a-pkgdown-site" class="section level2">
-<h2>Add a pkgdown site</h2>
+<div id="add-a-pkgdown-site" class="section level3">
+<h3>Add a pkgdown site</h3>
 <p>First, let’s include the github link of our package as the URL so
 that we can have a link to it on our pkgdown site.</p>
-<pre class="r"><code>usethis:::use_description_field(&quot;URL&quot;, &quot;https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown&quot;)</code></pre>
-<pre><code>## ✔ Setting URL field in DESCRIPTION to &#39;https://github.com/jacobbien/
-## withpkgdown-project/tree/main/withpkgdown&#39;</code></pre>
-<p>We start with the equivalent of <code>usethis::use_pkgdown()</code>,
-but with a few differences:</p>
-<ol style="list-style-type: decimal">
-<li>Avoid the parts to do with looking for projects</li>
-<li>Allow one to use a custom <code>_pkgdown.yml</code></li>
-<li>Store <code>_pkgdown.yml</code> outside of package</li>
-</ol>
-<p>To customize your site, you can adjust the <code>_pkgdown.yml</code>
-file as described in <a href="https://pkgdown.r-lib.org/articles/customise.html">this
-<code>pkgdown</code> vignette</a>.</p>
-<pre class="r"><code><span id='add_pkgdown'>add_pkgdown</span> &lt;- function(config_path = NULL) {
-  config_file &lt;- &quot;_pkgdown.yml&quot;
-  destdir &lt;- &quot;docs&quot;
-  usethis::use_build_ignore(c(config_file, destdir, &quot;pkgdown&quot;))
-  if (is.null(config_path)) {
-    # create a new config file (note it lives outside of package)
-    config &lt;- usethis:::pkgdown_config(destdir)
-    usethis::write_over(config_file, yaml::as.yaml(config))
-  } else {
-    # copy the one that already exists:
-    fs::file_copy(config_path, config_file)  
-  }
-}</code></pre>
-<pre class="r"><code><a href='#add_pkgdown'>add_pkgdown</a>(&quot;../withpkgdown-source-files/_pkgdown.yml&quot;)</code></pre>
+<pre class="r"><code>usethis:::use_description_field(
+  &quot;URL&quot;,
+  &quot;https://github.com/jacobbien/litr-project/tree/main/examples/make-an-r-package-with-extras/withpkgdown&quot;
+)</code></pre>
+<pre><code>## ✔ Setting URL field in DESCRIPTION to &#39;https://github.com/jacobbien/litr-
+## project/tree/main/examples/make-an-r-package-with-extras/withpkgdown&#39;</code></pre>
+<p>Be sure that this next command appears after
+<code>litr::document()</code> has been called in this file.</p>
+<pre class="r"><code>litr::add_pkgdown(&quot;../source-files/_pkgdown.yml&quot;)</code></pre>
 <pre><code>## ✔ Adding &#39;^_pkgdown\\.yml$&#39;, &#39;^docs$&#39;, &#39;^pkgdown$&#39; to &#39;.Rbuildignore&#39;</code></pre>
-<p>We customize the site by modifying
-<code>../withpkgdown-source-files/_pkgdown.yml</code> how we like. Here
-is the contents of the <code>_pkgdown.yml</code> that was used:</p>
-<pre class="r"><code>cat(readLines(&quot;../withpkgdown-source-files/_pkgdown.yml&quot;), sep = &#39;\n&#39;)</code></pre>
-<pre><code>Warning in readLines(&quot;../withpkgdown-source-files/_pkgdown.yml&quot;): incomplete
-final line found on &#39;../withpkgdown-source-files/_pkgdown.yml&#39;</code></pre>
-<pre><code>url: ~
-template:
-  bootstrap: 5
-
-navbar:
-  structure:
-    left:  [reference, articles, search]
-    right: [github]</code></pre>
-<p>Be sure that this next command is after <code>litr::document()</code>
-has been called.</p>
-<pre class="r"><code>pkgdown::build_site()</code></pre>
-<pre><code>## Warning in readLines(con, warn = readLines.warn): incomplete final line found on
-## &#39;./_pkgdown.yml&#39;</code></pre>
 <pre><code>## -- Installing package into temporary library -----------------------------------
 ## == Building pkgdown site =======================================================
 ## Reading from: &#39;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown&#39;
@@ -608,10 +522,24 @@ has been called.</p>
 ## Writing &#39;sitemap.xml&#39;
 ## -- Building search index -------------------------------------------------------
 ## == DONE ========================================================================</code></pre>
+<p>You can call <code>add_pkgdown()</code> without the argument;
+however, here we are providing a customized _pkgdown.yml file. See <a href="https://pkgdown.r-lib.org/articles/customise.html">this
+<code>pkgdown</code> vignette</a> for how to customize your site. Here
+is the contents of the <code>_pkgdown.yml</code> that was used:</p>
+<pre class="r"><code>cat(readLines(&quot;../source-files/_pkgdown.yml&quot;), sep = &#39;\n&#39;)</code></pre>
+<pre><code>url: ~
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [reference, articles, search]
+    right: [github]</code></pre>
 <p>After this step, you can locally see the site by opening
 <code>docs/index.html</code> in the browser. You can then copy the
 <code>docs</code> directory to your website’s server and you’re
 done.</p>
+</div>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />

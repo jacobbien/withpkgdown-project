@@ -11,10 +11,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
     knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
+    rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown
-LitrVersionUsed: 0.0.3
-LitrId: ade3e749c85887c9d295604c13d98bf9
+URL: https://github.com/jacobbien/litr-project/tree/main/examples/make-an-r-package-with-extras/withpkgdown
+LitrVersionUsed: 0.4.0
+LitrId: 5c11e7f8db64022219bca53377b1ee65
