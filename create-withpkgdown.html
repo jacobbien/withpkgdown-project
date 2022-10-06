@@ -381,8 +381,8 @@ of the R package.</p>
   fields = list(
     Package = params$package_name,
     Version = &quot;0.0.0.9000&quot;,
-    Title = &quot;A Package That Has a pkgdown Site&quot;,
-    Description = &quot;This package&#39;s purpose is to show how to use pkgdown with litr.&quot;,
+    Title = &quot;A Package With a README, Vignette, and Pkgdown Site&quot;,
+    Description = &quot;This package&#39;s purpose is to show how to have a README, vignette, and a pkgdown website using litr.&quot;,
     `Authors@R` = person(
       given = &quot;First&quot;,
       family = &quot;Last&quot;,
@@ -395,9 +395,12 @@ usethis::use_mit_license(copyright_holder = &quot;F. Last&quot;)</code></pre>
 </div>
 <div id="now-to-the-package-itself" class="section level2">
 <h2>Now to the package itself</h2>
-<div id="define-a-function" class="section level3">
-<h3>Define a function</h3>
-<p>Let’s define a function for our R package:</p>
+<p>This section is nearly identical to the <code>rhello</code> template.
+The real purpose of this template starts in <a href="#extra">this
+section</a>.</p>
+<div id="define-two-functions" class="section level3">
+<h3>Define two functions</h3>
+<p>Let’s define a function that says hello:</p>
 <pre class="r"><code>#&#39; Say hello to someone
 #&#39; 
 #&#39; @param name Name of a person
@@ -419,7 +422,7 @@ desired:</p>
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;), &quot;Hello Jacob!&quot;)
   testthat::expect_equal(<a href='#say_hello'>say_hello</a>(&quot;Jacob&quot;, exclamation = FALSE), &quot;Hello Jacob.&quot;)
 })</code></pre>
-<pre><code>## Test passed 🎉</code></pre>
+<pre><code>## Test passed 🥳</code></pre>
 <p>Code chunks that have one or more lines starting with
 <code>test_that(</code> (or <code>testthat::test_that(</code>) are added
 to the package as tests.</p>
@@ -434,9 +437,9 @@ to the package as tests.</p>
 }</code></pre>
 </div>
 </div>
-<div id="documenting-the-package-and-building" class="section level2">
-<h2>Documenting the package and building</h2>
-<p>Document package.</p>
+<div id="document-the-package" class="section level2">
+<h2>Document the package</h2>
+<p>This should happen before the pkgdown part.</p>
 <pre class="r"><code>rm(list = ls())
 litr::document()</code></pre>
 <pre><code>## ℹ Updating withpkgdown documentation</code></pre>
@@ -445,27 +448,55 @@ litr::document()</code></pre>
 ## Writing &#39;]8;;ide:run:pkgload::dev_help(&#39;say_hello&#39;)say_hello.Rd]8;;&#39;
 ## Writing &#39;]8;;ide:run:pkgload::dev_help(&#39;say_hi&#39;)say_hi.Rd]8;;&#39;</code></pre>
 </div>
+<div id="extra" class="section level2">
+<h2>Add extra items</h2>
+<p>This is the main point of this template. In addition to this .Rmd
+file, we’ll need a folder with a few extra source files (e.g., a hex
+sticker, a README.Rmd, vignettes, etc.). You’ll create that folder and
+the files within it yourself (i.e., they are not created by this .Rmd
+file). In this case, we’ll call this folder
+<code>withpkgdown-source-files</code>.</p>
+</div>
+<div id="add-a-hex-sticker" class="section level2">
+<h2>Add a hex sticker</h2>
+<p>This part is optional, but suppose you’ve made a hex sticker for your
+package.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+You’d put it in the <code>withpkgdown-source-files</code> directory.
+We’ll use the <code>litr</code> hex for this example, even though
+technically we should have created a “withpkgdown” sticker for this
+example.</p>
+<pre class="r"><code>fs::dir_create(&quot;man/figures&quot;)
+fs::file_copy(
+  path = file.path(&quot;..&quot;, &quot;withpkgdown-source-files&quot;, &quot;litr-hex.png&quot;), 
+  new_path = &quot;man/figures/logo.png&quot;, 
+  overwrite = TRUE
+)</code></pre>
+</div>
 <div id="add-a-readme" class="section level2">
 <h2>Add a README</h2>
-<p>We include a <code>README.Rmd</code> and then generate the
+<p>Our README.Rmd lives in the <code>withpkgdown-source-files</code>
+directory. As described <a href="https://pkgdown.r-lib.org/reference/build_home.html#package-logo">here</a>,
+we’ll add the following to the level-one header at the top of the
+README:</p>
+<pre><code># withpkgdown: A Package With a README, Vignette, and Pkgdown Site &lt;img src=&quot;man/figures/logo.png&quot; align=&quot;right&quot; /&gt;</code></pre>
+<p>We add <code>README.Rmd</code> to the package and then generate the
 <code>README.md</code> based on it:</p>
-<pre class="r"><code>usethis::use_readme_rmd(open = FALSE)</code></pre>
+<pre class="r"><code><span id='add_readme'>add_readme</span> &lt;- function(rmd_file) {
+  usethis::use_readme_rmd(open = FALSE)
+  fs::file_copy(rmd_file, new_path = &quot;README.Rmd&quot;, overwrite = TRUE)
+  xfun::Rscript_call(
+    rmarkdown::render,
+    args = list(
+      input = &quot;README.Rmd&quot;,
+      output_options = list(html_preview = &quot;false&quot;)
+    )
+  )
+}</code></pre>
+<pre class="r"><code><a href='#add_readme'>add_readme</a>(&quot;../withpkgdown-source-files/README.Rmd&quot;)</code></pre>
 <pre><code>## ✔ Writing &#39;README.Rmd&#39;
 ## ✔ Adding &#39;^README\\.Rmd$&#39; to &#39;.Rbuildignore&#39;
 ## ✔ Creating &#39;.git/hooks/&#39;
 ## ✔ Writing &#39;.git/hooks/pre-commit&#39;</code></pre>
-<pre class="r"><code>fs::file_copy(
-  path = file.path(&quot;..&quot;, &quot;withpkgdown-source-files&quot;, &quot;README.Rmd&quot;), 
-  new_path = &quot;README.Rmd&quot;, 
-  overwrite = TRUE
-)
-xfun::Rscript_call(
-  rmarkdown::render,
-  args = list(
-    input = &quot;README.Rmd&quot;,
-    output_options = list(html_preview = &quot;false&quot;)
-    )
-  )</code></pre>
 <pre><code>## [1] &quot;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown/README.md&quot;</code></pre>
 </div>
 <div id="add-a-vignette" class="section level2">
@@ -489,6 +520,11 @@ xfun::Rscript_call(
 </div>
 <div id="add-a-pkgdown-site" class="section level2">
 <h2>Add a pkgdown site</h2>
+<p>First, let’s include the github link of our package as the URL so
+that we can have a link to it on our pkgdown site.</p>
+<pre class="r"><code>usethis:::use_description_field(&quot;URL&quot;, &quot;https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown&quot;)</code></pre>
+<pre><code>## ✔ Setting URL field in DESCRIPTION to &#39;https://github.com/jacobbien/
+## withpkgdown-project/tree/main/withpkgdown&#39;</code></pre>
 <p>We start with the equivalent of <code>usethis::use_pkgdown()</code>,
 but with a few differences:</p>
 <ol style="list-style-type: decimal">
@@ -496,20 +532,43 @@ but with a few differences:</p>
 <li>Allow one to use a custom <code>_pkgdown.yml</code></li>
 <li>Store <code>_pkgdown.yml</code> outside of package</li>
 </ol>
-<pre class="r"><code>config_file &lt;- &quot;_pkgdown.yml&quot;
-destdir &lt;- &quot;docs&quot;
-usethis::use_build_ignore(c(config_file, destdir, &quot;pkgdown&quot;))</code></pre>
+<p>To customize your site, you can adjust the <code>_pkgdown.yml</code>
+file as described in <a href="https://pkgdown.r-lib.org/articles/customise.html">this
+<code>pkgdown</code> vignette</a>.</p>
+<pre class="r"><code><span id='add_pkgdown'>add_pkgdown</span> &lt;- function(config_path = NULL) {
+  config_file &lt;- &quot;_pkgdown.yml&quot;
+  destdir &lt;- &quot;docs&quot;
+  usethis::use_build_ignore(c(config_file, destdir, &quot;pkgdown&quot;))
+  if (is.null(config_path)) {
+    # create a new config file (note it lives outside of package)
+    config &lt;- usethis:::pkgdown_config(destdir)
+    usethis::write_over(config_file, yaml::as.yaml(config))
+  } else {
+    # copy the one that already exists:
+    fs::file_copy(config_path, config_file)  
+  }
+}</code></pre>
+<pre class="r"><code><a href='#add_pkgdown'>add_pkgdown</a>(&quot;../withpkgdown-source-files/_pkgdown.yml&quot;)</code></pre>
 <pre><code>## ✔ Adding &#39;^_pkgdown\\.yml$&#39;, &#39;^docs$&#39;, &#39;^pkgdown$&#39; to &#39;.Rbuildignore&#39;</code></pre>
-<pre class="r"><code>config_path &lt;- file.path(&quot;../withpkgdown-source-files&quot;, &quot;_pkgdown.yml&quot;)
-if (!fs::file_exists(config_path)) {
-  # create a new config file (note it lives outside of package)
-  config &lt;- usethis:::pkgdown_config(destdir)
-  usethis::write_over(config_path, yaml::as.yaml(config))
-}
-fs::file_copy(config_path, &quot;.&quot;)</code></pre>
+<p>We customize the site by modifying
+<code>../withpkgdown-source-files/_pkgdown.yml</code> how we like. Here
+is the contents of the <code>_pkgdown.yml</code> that was used:</p>
+<pre class="r"><code>cat(readLines(&quot;../withpkgdown-source-files/_pkgdown.yml&quot;), sep = &#39;\n&#39;)</code></pre>
+<pre><code>Warning in readLines(&quot;../withpkgdown-source-files/_pkgdown.yml&quot;): incomplete
+final line found on &#39;../withpkgdown-source-files/_pkgdown.yml&#39;</code></pre>
+<pre><code>url: ~
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [reference, articles, search]
+    right: [github]</code></pre>
 <p>Be sure that this next command is after <code>litr::document()</code>
 has been called.</p>
 <pre class="r"><code>pkgdown::build_site()</code></pre>
+<pre><code>## Warning in readLines(con, warn = readLines.warn): incomplete final line found on
+## &#39;./_pkgdown.yml&#39;</code></pre>
 <pre><code>## -- Installing package into temporary library -----------------------------------
 ## == Building pkgdown site =======================================================
 ## Reading from: &#39;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown&#39;
@@ -517,11 +576,24 @@ has been called.</p>
 ## -- Initialising site -----------------------------------------------------------
 ## Copying &#39;../../../../../Library/R/x86_64/4.2/library/pkgdown/BS5/assets/link.svg&#39; to &#39;link.svg&#39;
 ## Copying &#39;../../../../../Library/R/x86_64/4.2/library/pkgdown/BS5/assets/pkgdown.js&#39; to &#39;pkgdown.js&#39;
+## -- Building favicons -----------------------------------------------------------
+## Building favicons with realfavicongenerator.net...
+## Copying &#39;pkgdown/favicon/apple-touch-icon-120x120.png&#39; to &#39;apple-touch-icon-120x120.png&#39;
+## Copying &#39;pkgdown/favicon/apple-touch-icon-152x152.png&#39; to &#39;apple-touch-icon-152x152.png&#39;
+## Copying &#39;pkgdown/favicon/apple-touch-icon-180x180.png&#39; to &#39;apple-touch-icon-180x180.png&#39;
+## Copying &#39;pkgdown/favicon/apple-touch-icon-60x60.png&#39; to &#39;apple-touch-icon-60x60.png&#39;
+## Copying &#39;pkgdown/favicon/apple-touch-icon-76x76.png&#39; to &#39;apple-touch-icon-76x76.png&#39;
+## Copying &#39;pkgdown/favicon/apple-touch-icon.png&#39; to &#39;apple-touch-icon.png&#39;
+## Copying &#39;pkgdown/favicon/favicon-16x16.png&#39; to &#39;favicon-16x16.png&#39;
+## Copying &#39;pkgdown/favicon/favicon-32x32.png&#39; to &#39;favicon-32x32.png&#39;
+## Copying &#39;pkgdown/favicon/favicon.ico&#39; to &#39;favicon.ico&#39;
+## Copying &#39;man/figures/logo.png&#39; to &#39;logo.png&#39;
 ## -- Building home ---------------------------------------------------------------
 ## Writing &#39;authors.html&#39;
 ## Reading &#39;LICENSE.md&#39;
 ## Writing &#39;LICENSE.html&#39;
 ## Writing &#39;LICENSE-text.html&#39;
+## Copying &#39;man/figures/logo.png&#39; to &#39;reference/figures/logo.png&#39;
 ## Writing &#39;404.html&#39;
 ## -- Building function reference -------------------------------------------------
 ## Writing &#39;reference/index.html&#39;
@@ -537,16 +609,15 @@ has been called.</p>
 ## -- Building search index -------------------------------------------------------
 ## == DONE ========================================================================</code></pre>
 <p>After this step, you can locally see the site by opening
-<code>docs/index.html</code> in the browser.</p>
-<p>To deploy this using github pages, we go to our repo on github
-(through the browser) and click on Settings &gt; Pages, which brings us
-<a href="https://github.com/jacobbien/withpkgdown-project/settings/pages">here</a>.
-Under “Branch”, we choose the appropriate branch followed by the
-<code>/docs</code> folder.</p>
-<p>do the following additional step.</p>
-<pre class="r"><code>pkgdown:::build_github_pages()</code></pre>
-<pre><code>## -- Extra files for GitHub pages ------------------------------------------------
-## Writing ]8;;ide:run:pkgdown::preview_page(&#39;.nojekyll&#39;)&#39;.nojekyll&#39;]8;;</code></pre>
+<code>docs/index.html</code> in the browser. You can then copy the
+<code>docs</code> directory to your website’s server and you’re
+done.</p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>You can make it in R with <a href="https://github.com/GuangchuangYu/hexSticker">this tool</a>!<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

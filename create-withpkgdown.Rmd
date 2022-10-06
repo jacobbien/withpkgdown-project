@@ -21,8 +21,8 @@ usethis::create_package(
   fields = list(
     Package = params$package_name,
     Version = "0.0.0.9000",
-    Title = "A Package That Has a pkgdown Site",
-    Description = "This package's purpose is to show how to use pkgdown with litr.",
+    Title = "A Package With a README, Vignette, and Pkgdown Site",
+    Description = "This package's purpose is to show how to have a README, vignette, and a pkgdown website using litr.",
     `Authors@R` = person(
       given = "First",
       family = "Last",
@@ -36,9 +36,11 @@ usethis::use_mit_license(copyright_holder = "F. Last")
 
 ## Now to the package itself
 
-### Define a function
+This section is nearly identical to the `rhello` template.  The real purpose of this template starts in [this section](#extra).
 
-Let's define a function for our R package:
+### Define two functions
+
+Let's define a function that says hello:
 
 ```{r}
 #' Say hello to someone
@@ -85,33 +87,58 @@ say_hi <- function(name, exclamation = TRUE) {
 }
 ```
 
-## Documenting the package and building
+## Document the package
 
-Document package.
+This should happen before the pkgdown part.
 
 ```{r}
 rm(list = ls())
 litr::document()
 ```
 
-## Add a README
+## Add extra items {#extra}
 
-We include a `README.Rmd` and then generate the `README.md` based on it:
+This is the main point of this template.  In addition to this .Rmd file, we'll need a folder with a few extra source files (e.g., a hex sticker, a README.Rmd, vignettes, etc.).  You'll create that folder and the files within it yourself (i.e., they are not created by this .Rmd file).  In this case, we'll call this folder `withpkgdown-source-files`.
+
+## Add a hex sticker
+
+This part is optional, but suppose you've made a hex sticker for your package.^[You can make it in R with [this tool](https://github.com/GuangchuangYu/hexSticker)!]  You'd put it in the `withpkgdown-source-files` directory.  We'll use the `litr` hex for this example, even though technically we should have created a "withpkgdown" sticker for this example.
 
 ```{r}
-usethis::use_readme_rmd(open = FALSE)
+fs::dir_create("man/figures")
 fs::file_copy(
-  path = file.path("..", "withpkgdown-source-files", "README.Rmd"), 
-  new_path = "README.Rmd", 
+  path = file.path("..", "withpkgdown-source-files", "litr-hex.png"), 
+  new_path = "man/figures/logo.png", 
   overwrite = TRUE
 )
-xfun::Rscript_call(
-  rmarkdown::render,
-  args = list(
-    input = "README.Rmd",
-    output_options = list(html_preview = "false")
+```
+
+## Add a README
+
+Our README.Rmd lives in the `withpkgdown-source-files` directory.  As described [here](https://pkgdown.r-lib.org/reference/build_home.html#package-logo), we'll add the following to the level-one header at the top of the README:
+
+```
+# withpkgdown: A Package With a README, Vignette, and Pkgdown Site <img src="man/figures/logo.png" align="right" />
+```
+
+We add `README.Rmd` to the package and then generate the `README.md` based on it:
+
+```{r}
+add_readme <- function(rmd_file) {
+  usethis::use_readme_rmd(open = FALSE)
+  fs::file_copy(rmd_file, new_path = "README.Rmd", overwrite = TRUE)
+  xfun::Rscript_call(
+    rmarkdown::render,
+    args = list(
+      input = "README.Rmd",
+      output_options = list(html_preview = "false")
     )
   )
+}
+```
+
+```{r}
+add_readme("../withpkgdown-source-files/README.Rmd")
 ```
 
 ## Add a vignette
@@ -140,23 +167,44 @@ add_vignettes("../withpkgdown-source-files/using-this-package.Rmd")
 
 ## Add a pkgdown site
 
+First, let's include the github link of our package as the URL so that we can have a link to it on our pkgdown site.
+
+```{r}
+usethis:::use_description_field("URL", "https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown")
+```
+
 We start with the equivalent of `usethis::use_pkgdown()`, but with a few differences:
 
 1. Avoid the parts to do with looking for projects
 2. Allow one to use a custom `_pkgdown.yml`
 3. Store `_pkgdown.yml` outside of package
 
+To customize your site, you can adjust the `_pkgdown.yml` file as described in [this `pkgdown` vignette](https://pkgdown.r-lib.org/articles/customise.html).
+
 ```{r}
-config_file <- "_pkgdown.yml"
-destdir <- "docs"
-usethis::use_build_ignore(c(config_file, destdir, "pkgdown"))
-config_path <- file.path("../withpkgdown-source-files", "_pkgdown.yml")
-if (!fs::file_exists(config_path)) {
-  # create a new config file (note it lives outside of package)
-  config <- usethis:::pkgdown_config(destdir)
-  usethis::write_over(config_path, yaml::as.yaml(config))
+add_pkgdown <- function(config_path = NULL) {
+  config_file <- "_pkgdown.yml"
+  destdir <- "docs"
+  usethis::use_build_ignore(c(config_file, destdir, "pkgdown"))
+  if (is.null(config_path)) {
+    # create a new config file (note it lives outside of package)
+    config <- usethis:::pkgdown_config(destdir)
+    usethis::write_over(config_file, yaml::as.yaml(config))
+  } else {
+    # copy the one that already exists:
+    fs::file_copy(config_path, config_file)  
+  }
 }
-fs::file_copy(config_path, ".")
+```
+
+```{r}
+add_pkgdown("../withpkgdown-source-files/_pkgdown.yml")
+```
+
+We customize the site by modifying `../withpkgdown-source-files/_pkgdown.yml` how we like.  Here is the contents of the `_pkgdown.yml` that was used:
+
+```{r comment=''}
+cat(readLines("../withpkgdown-source-files/_pkgdown.yml"), sep = '\n')
 ```
 
 Be sure that this next command is after `litr::document()` has been called.
@@ -165,13 +213,4 @@ Be sure that this next command is after `litr::document()` has been called.
 pkgdown::build_site()
 ```
 
-After this step, you can locally see the site by opening `docs/index.html` in the browser.
-
-To deploy this using github pages, we go to our repo on github (through the browser) and click on Settings > Pages, which brings us [here](https://github.com/jacobbien/withpkgdown-project/settings/pages).  Under "Branch", we choose the appropriate branch followed by the `/docs` folder.
-
-do the following additional step.
-
-```{r}
-pkgdown:::build_github_pages()
-```
-
+After this step, you can locally see the site by opening `docs/index.html` in the browser.  You can then copy the `docs` directory to your website's server and you're done.

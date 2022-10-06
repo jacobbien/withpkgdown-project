@@ -1,10 +1,10 @@
 Package: withpkgdown
-Title: A Package That Has a pkgdown Site
+Title: A Package With a README, Vignette, and Pkgdown Site
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "you@gmail.com", role = c("aut", "cre"))
-Description: This package's purpose is to show how to use pkgdown with
-    litr.
+Description: This package's purpose is to show how to have a README,
+    vignette, and a pkgdown website using litr.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -15,5 +15,6 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown
 LitrVersionUsed: 0.0.3
-LitrId: b63d6c4800bb56564577ee0992a25f6e
+LitrId: 7732b6bd216ec5f6b2f903c8e1461fd3
