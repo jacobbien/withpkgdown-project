@@ -1,5 +1,12 @@
 destination: ../docs/
 
+repo:
+  url:
+    home: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown/   
+    source: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown/
+    issue: https://github.com/jacobbien/withpkgdown-project/issues/
+    user: https://github.com/
+
 url: ~
 template:
   bootstrap: 5

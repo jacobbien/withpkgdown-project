@@ -481,8 +481,6 @@ that we can have a link to it on our pkgdown site.</p>
 ## Reading from: &#39;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/withpkgdown&#39;
 ## Writing to:   &#39;/Users/jacobbien/Dropbox/literate/Rpackage/withpkgdown-project/docs&#39;
 ## -- Initialising site -----------------------------------------------------------
-## Copying &#39;../../../../../Library/R/x86_64/4.2/library/pkgdown/BS5/assets/link.svg&#39; to &#39;link.svg&#39;
-## Copying &#39;../../../../../Library/R/x86_64/4.2/library/pkgdown/BS5/assets/pkgdown.js&#39; to &#39;pkgdown.js&#39;
 ## -- Building favicons -----------------------------------------------------------
 ## Building favicons with realfavicongenerator.net...
 ## Copying &#39;pkgdown/favicon/apple-touch-icon-120x120.png&#39; to &#39;apple-touch-icon-120x120.png&#39;
@@ -493,14 +491,11 @@ that we can have a link to it on our pkgdown site.</p>
 ## Copying &#39;pkgdown/favicon/apple-touch-icon.png&#39; to &#39;apple-touch-icon.png&#39;
 ## Copying &#39;pkgdown/favicon/favicon-16x16.png&#39; to &#39;favicon-16x16.png&#39;
 ## Copying &#39;pkgdown/favicon/favicon-32x32.png&#39; to &#39;favicon-32x32.png&#39;
-## Copying &#39;pkgdown/favicon/favicon.ico&#39; to &#39;favicon.ico&#39;
-## Copying &#39;man/figures/logo.png&#39; to &#39;logo.png&#39;
 ## -- Building home ---------------------------------------------------------------
 ## Writing &#39;authors.html&#39;
 ## Reading &#39;LICENSE.md&#39;
 ## Writing &#39;LICENSE.html&#39;
 ## Writing &#39;LICENSE-text.html&#39;
-## Copying &#39;man/figures/logo.png&#39; to &#39;reference/figures/logo.png&#39;
 ## Writing &#39;404.html&#39;
 ## -- Building function reference -------------------------------------------------
 ## Writing &#39;reference/index.html&#39;
@@ -521,6 +516,13 @@ however, here we are providing a customized _pkgdown.yml file. See <a href="http
 is the contents of the <code>_pkgdown.yml</code> that was used:</p>
 <pre class="r"><code>cat(readLines(&quot;../source-files/_pkgdown.yml&quot;), sep = &#39;\n&#39;)</code></pre>
 <pre><code>destination: ../docs/
+
+repo:
+  url:
+    home: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown/   
+    source: https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown/
+    issue: https://github.com/jacobbien/withpkgdown-project/issues/
+    user: https://github.com/
 
 url: ~
 template:
