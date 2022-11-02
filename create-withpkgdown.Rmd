@@ -107,7 +107,7 @@ First, let's include the github link of our package as the URL so that we can ha
 ```{r}
 usethis:::use_description_field(
   "URL",
-  "https://github.com/jacobbien/litr-project/tree/main/examples/make-an-r-package-with-extras/withpkgdown"
+  "https://github.com/jacobbien/withpkgdown-project/tree/main/withpkgdown"
 )
 ```
 
